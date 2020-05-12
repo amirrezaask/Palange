@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block trips_management_button_active %}active{% endblock %}
+{% block content %}
+    <div class="ui olive two item menu">
+        <a class="active item">{% trans "manage" %}</a>
+        <a href="{% url "trips:edit" trip.id %}" class="item">{% trans "edit" %}</a>
+    </div>
+    <h2 class="ui centered header">{{ trip }}</h2>
+    <table class="ui olive table">
+        <thead>
+        <tr>
+            <th>{% trans "Travler" %}</th>
+            <th>{% trans "Email" %}</th>
+            <th>{% trans "Phone Number" %}</th>
+            <th>{% trans "Status" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for preregister in trip.preregister_set.all %}
+            <tr>
+                <td>{{ preregister.profile }}</td>
+                <td>{{ preregister.profile.user.email }}</td>
+                <td>{{ preregister.profile.phone_number }}</td>
+                <td>
+                    {% if preregister.is_approved %}
+                        <div class="ui olive basic label"><i class="check icon"></i>{% trans "approved" %}</div>
+                    {% else %}
+                        <form action="{% url "trips:approve" preregister.id %}" method="post">
+                        {% csrf_token %}
+                            <button class="ui olive basic label">{% trans "approve" %}</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

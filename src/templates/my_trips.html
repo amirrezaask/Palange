@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block my_trips_button_active %}active{% endblock %}
+{% block content %}
+    {% if preregister_list %}
+        <div class="ui list">
+            {% for preregister in preregister_list %}
+                <div class="item">
+                    <img class="ui small rounded image" style="height: 120px" src="{{ preregister.trip.image.url }}"
+                         alt="">
+                    <div class="content">
+                        <a href="{% url "trips:detail" preregister.trip_id %}"
+                           class="ui big header">{{ preregister.trip.title }}</a>
+                        <div class="description">{{ preregister.trip.description }}</div>
+
+                        {% if preregister.is_approved %}
+                            <div class="ui olive message" style="max-width: 300px">
+                                <i class="check icon"></i>
+                                {% trans "Your registeration is approved." %}
+                            </div>
+                        {% else %}
+                            <div class="ui warning message" style="max-width: 300px">
+                                <i class="spinner icon"></i>
+                                {% trans "Your registeration is pending for approvement." %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="ui info message">{% trans "You have no trips." %}</div>
+    {% endif %}
+{% endblock %}

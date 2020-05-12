@@ -1,0 +1,193 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-25 02:31+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/base.html:8 templates/base.html:32
+msgid "Palange"
+msgstr "پلنگه"
+
+#: templates/base.html:33
+msgid "Emam r-h: Go to travel a lot to learn things."
+msgstr "امام ر-ه: زیاد به سفر برید تا چیزی یاد بگیرید"
+
+#: templates/base.html:41
+msgid "home"
+msgstr "خانه"
+
+#: templates/base.html:46
+msgid "my trips"
+msgstr "سفر‌های من"
+
+#: templates/base.html:52
+msgid "new trip"
+msgstr "سفر جدید"
+
+#: templates/base.html:60
+msgid "trips management"
+msgstr "مدیریت سفر‌ها"
+
+#: templates/base.html:67
+msgid "Welcome"
+msgstr "خوش‌‌اومدی"
+
+#: templates/base.html:68
+msgid "Log out"
+msgstr "خروج"
+
+#: templates/base.html:70
+msgid "Log in"
+msgstr "ورود"
+
+#: templates/base.html:71
+msgid "Sign up"
+msgstr "ثبت نام"
+
+#: templates/base.html:88
+msgid "All copyrights reserved for Palange."
+msgstr "تمام حقوق مادی و معنوی برای پلنگه رزرو شده‌اند."
+
+#: templates/edit_trip.html:6 templates/manage_trip.html:6
+#: templates/trips_management.html:19
+msgid "manage"
+msgstr "مدیریت"
+
+#: templates/edit_trip.html:7 templates/manage_trip.html:7
+#: templates/trips_management.html:16
+msgid "edit"
+msgstr "ویرایش"
+
+#: templates/manage_trip.html:13
+msgid "Travler"
+msgstr "همسفر"
+
+#: templates/manage_trip.html:14
+msgid "Email"
+msgstr "ایمیل"
+
+#: templates/manage_trip.html:15 user_auth/forms.py:8 user_auth/models.py:13
+msgid "Phone Number"
+msgstr "شماره تلفن"
+
+#: templates/manage_trip.html:16
+msgid "Status"
+msgstr "وضعیت"
+
+#: templates/manage_trip.html:27
+msgid "approved"
+msgstr "تایید شده"
+
+#: templates/manage_trip.html:31
+msgid "approve"
+msgstr "تایید"
+
+#: templates/my_trips.html:19 templates/trip_detail.html:59
+msgid "Your registeration is approved."
+msgstr "ثبت‌نام شما تایید شده است."
+
+#: templates/my_trips.html:24 templates/trip_detail.html:62
+msgid "Your registeration is pending for approvement."
+msgstr "ثبت‌نام شما منتظر تایید است."
+
+#: templates/my_trips.html:32 templates/trips_management.html:26
+msgid "You have no trips."
+msgstr "سفری ندارید."
+
+#: templates/trip_list.html:23 trips/models.py:18
+msgid "Organizer"
+msgstr "برگزار‌کننده"
+
+#: trips/mixins.py:7
+msgid "You are not an organizer"
+msgstr "شما برگزارکننده نیستید"
+
+#: trips/mixins.py:17
+msgid "You are not manager of this trip"
+msgstr "شما مدیر این سفر نیستید"
+
+#: trips/models.py:15 trips/models.py:41
+msgid "Trip"
+msgstr "سفر"
+
+#: trips/models.py:16
+msgid "Trips"
+msgstr "سفر‌ها"
+
+#: trips/models.py:20
+msgid "Title"
+msgstr "عنوان"
+
+#: trips/models.py:21
+msgid "Description"
+msgstr "توضیحات"
+
+#: trips/models.py:22
+msgid "Start Date"
+msgstr "تاریخ شروع"
+
+#: trips/models.py:23
+msgid "End Date"
+msgstr "تاریخ پایان"
+
+#: trips/models.py:24
+msgid "Capacity"
+msgstr "ظرفیت"
+
+#: trips/models.py:25
+msgid "Image"
+msgstr "تصویر"
+
+#: trips/models.py:36
+msgid "PreRegister"
+msgstr "پیش‌ثبت‌نام"
+
+#: trips/models.py:37
+msgid "PreRegisters"
+msgstr "‌پیش‌ثبت‌نام‌ها"
+
+#: trips/models.py:40 user_auth/admin.py:14 user_auth/models.py:8
+msgid "Profile"
+msgstr "پروفایل"
+
+#: trips/models.py:42
+msgid "Is Approved"
+msgstr "تایید شده"
+
+#: trips/views.py:62
+msgid "You preregistered successfully, approvement pending."
+msgstr "شما با موفقیت پیش‌ثبت‌نام کردید، منتظر تایید بمانید."
+
+#: trips/views.py:69
+msgid "We will miss you :("
+msgstr "دلمون برات تنگ میشه :("
+
+#: trips/views.py:93
+msgid "Just approved."
+msgstr "تایید شد."
+
+#: user_auth/models.py:9
+msgid "Profiles"
+msgstr "پروفایل‌ها"
+
+#: user_auth/models.py:11
+msgid "User"
+msgstr "کاربر"
+
+#: user_auth/models.py:14
+msgid "Is Organizer"
+msgstr "برگزارکننده هست"

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block trips_management_button_active %}active{% endblock %}
+{% block content %}
+    {% if trip_list %}
+        <div class="ui list">
+            {% for trip in trip_list %}
+                <div class="item">
+                    <img class="ui small rounded image" style="height: 120px" src="{{ trip.image.url }}" alt="">
+                    <div class="content">
+                        <a href="{% url "trips:detail" trip.id %}"
+                           class="ui big header">{{ trip.title }}</a>
+                        <div class="description">{{ trip.description }}</div>
+                        <br><br>
+                        <a href="{% url "trips:edit" trip.id %}" class="ui olive small button">
+                            <i class="edit icon"></i>{% trans "edit" %}
+                        </a>
+                        <a href="{% url "trips:manage" trip.id %}" class="ui olive small button">
+                            <i class="cog icon"></i>{% trans "manage" %}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="ui info message">{% trans "You have no trips." %}</div>
+    {% endif %}
+{% endblock %}

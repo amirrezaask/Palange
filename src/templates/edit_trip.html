@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block trips_management_button_active %}active{% endblock %}
+{% block content %}
+    <div class="ui olive two item menu">
+        <a href="{% url "trips:manage" trip.id %}" class="item">{% trans "manage" %}</a>
+        <a class="active item">{% trans "edit" %}</a>
+    </div>
+    <div class="ui centered segment">
+        <form class="ui form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>{{ form.as_p }}</table>
+            <button class="ui right floated olive button" type="submit">{% trans "Save" %}</button>
+        </form>
+    </div>
+{% endblock %}

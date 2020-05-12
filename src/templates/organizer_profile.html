@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block home_button_active %}active{% endblock %}
+{% block content %}
+<div class="ui link three cards">
+    <a class="ui card">
+        <div class="image">
+            <img src="{{ profile.profile_picture }}" alt="">
+        </div>
+        <div class="content">
+            <div class="header">{{ profile.user.first_name + " " + profile.user.last_name  }}</div>
+            <div class="description">{{ profile.user.username }}</div>
+        </div>
+        <div class="extra content">
+            <span><i class="user icon"></i> {{ profile.score }}</span>
+        </div>
+    </a>
+</div>
+{% if request.user.is_authenticated and request.user.profile.is_organizer and (request.user.username == profile.user.username ) % }
+<div class="ui horizontal divider">{% trans "Organizer" %}</div>
+<div class="ui one column grid">
+    <div class="center aligned column">
+        <a class="big ui olive button" href="{% url "user_auth:edit_organizer_profile" %}"><i class="plus icon"></i> {% trans "Edit Profile" }</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+    {% if trip.image %}
+        <img class="ui fluid image" src="{{ trip.image.url }}" alt=""/>
+    {% endif %}
+    <br>
+    <div class="ui three horizontal cards">
+        <div class="olive card">
+            <div class="content">
+                <div class="header">
+                    <i class="users icon"></i> چند نفریم؟
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="small header">
+                    {{ trip.capacity }}
+                </div>
+            </div>
+        </div>
+        <div class="olive card">
+            <div class="content">
+                <div class="header">
+                    <i class="calendar alternate icon"></i> از کی تا کی؟
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="small header">
+                    {{ trip.start_date|date:"d M" }} - {{ trip.end_date|date:"d M" }}
+                </div>
+            </div>
+        </div>
+        <div class="olive card">
+            <div class="content">
+                <div class="header">
+                    <i class="flag icon"></i> با کی میریم؟
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="small header">
+                    {{ trip.organizer.user }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui segment">
+        <h2 class="ui header">{{ trip.title }}</h2>
+        <p class="text">{{ trip.description|linebreaks }}</p>
+    </div>
+    <div class="ui horizontal divider">منم هستم</div>
+    <div class="ui one column grid">
+        <div class="center aligned column">
+            {% if preregister %}
+                <div class="ui olive message">
+                    {% if preregister.is_approved %}
+                        <i class="check icon"></i>
+                        {% trans "Your registeration is approved." %}
+                    {% else %}
+                        <i class="spinner icon"></i>
+                        {% trans "Your registeration is pending for approvement." %}
+                    {% endif %}
+                </div>
+                <form action="{% url "trips:cancel_preregister" trip.id %}" method="post">
+                {% csrf_token %}
+                <button class="small ui orange button" type="submit"><i class="cancel icon"></i>نمی‌تونم تو این سفر باشم</button>
+                </form>
+            {% else %}
+                <form action="{% url "trips:preregister" trip.id %}" method="post">
+                    {% csrf_token %}
+                    می‌خوام
+                    <button class="big ui olive button" type="submit"><i class="hand peace icon"></i> پیش‌ثبت‌نام
+                    </button>
+                    کنم
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

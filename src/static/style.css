@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Behdad';
+    src: url('fonts/behdad/Behdad-Regular.woff');
+}
+
+body {
+    font-family: "Behdad","Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans","Verdana","Arial","sans-serif" !important;
+}
+
+body * {
+    font-family: inherit !important;
+}

@@ -1,0 +1,95 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% trans "Palange" %}{% endblock %}</title>
+    <link rel="stylesheet"
+          href="https://cdn.rtlcss.com/semantic-ui/2.2.6/semantic.rtl.min.css"
+          integrity="sha384-SoFpYwv1KAavXaXLYNMWzoh72UjpjHzNfD3vfDLOUQmHP48dPDgmDsihSuiyXbjb"
+          crossorigin="anonymous">
+    <link rel="stylesheet prefetch"
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.rtlcss.com/semantic-ui/2.4.1/semantic.min.js"
+            integrity="sha384-6urqf2sgCGDfIXcoxTUOVIoQV+jFr/Zuc4O2wCRS6Rnd8w0OJ17C4Oo3PuXu8ZtF"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="{% static "style.css" %}">
+    {% block overstyle %}
+    {% endblock %}
+    {% block head_script %}
+    {% endblock %}
+</head>
+<body>
+<div class="ui container">
+    {% block header %}
+        <div class="ui inverted segment">
+            <h1 class="ui olive inverted header">{% trans "Palange" %}</h1>
+            <h5 class="ui white inverted">{% trans "Emam r-h: Go to travel a lot to learn things." %}</h5>
+        </div>
+    {% endblock %}
+    {% block menu %}
+        <div class="ui stackable container olive menu">
+            {% block menu_items %}
+                {% block home_button %}
+                    <a href="{% url "home" %}" class="{% block home_button_active %}{% endblock %} item">
+                        <i class="home icon"></i>{% trans "home" %}
+                    </a>
+                {% endblock %}
+                {% block my_trips_button %}
+                    <a href="{% url "trips:my" %}" class="{% block my_trips_button_active %}{% endblock %} item">
+                        <i class="suitcase icon"></i>{% trans "my trips" %}
+                    </a>
+                {% endblock %}
+                {% block new_button %}
+                    {% if request.user.is_authenticated and request.user.profile.is_organizer %}
+                        <a href="{% url "trips:new" %}" class="{% block new_button_active %}{% endblock %} item">
+                            <i class="olive plus icon"></i>{% trans "new trip" %}
+                        </a>
+                    {% endif %}
+                {% endblock %}
+                {% block trips_management_button %}
+                    {% if request.user.profile.is_organizer %}
+                        <a href="{% url "trips:management" %}"
+                           class="{% block trips_management_button_active %}{% endblock %} item">
+                            <i class="cogs icon"></i>{% trans "trips management" %}
+                        </a>
+                    {% endif %}
+                {% endblock %}
+            {% endblock %}
+
+            {% if request.user.is_authenticated and request.user.profile.is_organizer %}
+                <a class="right item">{% trans "Welcome" %} {{ user.username }}</a>
+                <a href="{% url "auth:logout" %}" class="item">{% trans "Log out" %}</a>
+            {% else %}
+                <a href="{% url "auth:login" %}" class="right item">{% trans "Log in" %}</a>
+                <a href="{% url "auth:signup" %}" class="item">{% trans "Sign up" %}</a>
+            {% endif %}
+
+        </div>
+    {% endblock %}
+    {% for message in messages %}
+        <div class="ui {{ message.tags }} message">{{ message }}</div>
+    {% endfor %}
+
+    {% block outer_content %}
+        <div class="ui segment" style="min-height: 850px">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+    {% block footer %}
+        <div class="ui inverted segment center aligned">
+            <h5><i class="copyright icon"></i> {% trans "All copyrights reserved for Palange." %}</h5>
+        </div>
+    {% endblock %}
+</div>
+{% block tail_script %}
+{% endblock %}
+</body>
+</html>
