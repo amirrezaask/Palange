@@ -35,3 +35,10 @@ def update_organizer_profile(req):
         profile_info = get_object_or_404(OrganizerProfile, pk=organizer_id)
         
         return render(req, 'organizer_edit_profile.html', {"profile": profile_info})
+    if req.method == "POST":
+        organizer_id = req.GET["id"]
+        if organizer_id != req.user.user_id:
+            return HttpResponseForbidden()
+        OrganizerProfile.filter(pk=organizer_id).update(**req.POST)
+        return
+                
