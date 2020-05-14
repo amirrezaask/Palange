@@ -12,7 +12,8 @@ from trips.models import Trip, PreRegister
 
 class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
     model = Trip
-    fields = ['title', 'description', 'start_date', 'end_date', 'capacity', 'image']
+    fields = ['title', 'description', 'start_date',
+              'end_date', 'capacity', 'image']
     template_name = 'new_trip.html'
     success_url = reverse_lazy('home')
 
@@ -23,7 +24,8 @@ class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
 
 class EditTripView(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
     model = Trip
-    fields = ['title', 'description', 'start_date', 'end_date', 'capacity', 'image']
+    fields = ['title', 'description', 'start_date',
+              'end_date', 'capacity', 'image']
     template_name = 'edit_trip.html'
     success_url = reverse_lazy('home')
 
@@ -51,9 +53,11 @@ class TripDetailView(DetailView):
         if not self.request.user.is_authenticated:
             return context_data
         try:
-            context_data['preregister'] = PreRegister.objects.get(trip=self.object, profile=self.request.user.profile)
+            context_data['preregister'] = PreRegister.objects.get(
+                trip=self.object, profile=self.request.user.profile)
         except PreRegister.DoesNotExist:
             pass
+        context_data['comments'] = self.object.comments()
         return context_data
 
 
@@ -63,14 +67,17 @@ class PreRegisterView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         trip = get_object_or_404(Trip, id=pk)
-        PreRegister.objects.get_or_create(profile=request.user.profile, trip=trip)
-        messages.success(request, _('You preregistered successfully, approvement pending.'))
+        PreRegister.objects.get_or_create(
+            profile=request.user.profile, trip=trip)
+        messages.success(request, _(
+            'You preregistered successfully, approvement pending.'))
         return redirect('trips:detail', pk)
 
 
 class CancelPreRegisterView(LoginRequiredMixin, View):
     def post(self, request, pk):
-        PreRegister.objects.filter(profile=request.user.profile, trip_id=pk).delete()
+        PreRegister.objects.filter(
+            profile=request.user.profile, trip_id=pk).delete()
         messages.warning(request, _('We will miss you :('))
         return redirect('trips:detail', pk)
 

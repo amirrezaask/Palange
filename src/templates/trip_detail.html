@@ -48,6 +48,12 @@
     <div class="ui segment">
         <h2 class="ui header">{{ trip.title }}</h2>
         <p class="text">{{ trip.description|linebreaks }}</p>
+        <ul>
+            {% for c in trip.comments }
+            <li>{{ c.text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     </div>
     <div class="ui horizontal divider">منم هستم</div>
     <div class="ui one column grid">
