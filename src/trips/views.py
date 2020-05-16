@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, CreateView, UpdateView, ListView, DetailView
 
 from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
-from trips.models import Trip, PreRegister
+from trips.models import Trip, PreRegister, TripPayment
 
 
 class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
@@ -60,6 +60,30 @@ class TripDetailView(DetailView):
         context_data['comments'] = self.object.comments()
         return context_data
 
+
+def get_ipg():
+    return ("", "")
+    
+def trip_payment_inti(req):
+    trip_id = req.GET["trip"]
+    pre_register_id = req.GET["pre_register_id"]
+    pre_register = get_object_or_404(PreRegister, pk=pre_register_id)
+    if pre_register.is_paid:
+        # error pre register is already paid
+        pass
+    tp = TripPayment(trip=trip_id, pre_register=pre_register_id, state=0)
+    uuid, url = get_ipg()
+    tp.ipg_uuid = uuid
+    tp.save()
+    return redirect(req, url)
+    
+def trip_payment_ipg_callback(req):
+    payment_uuid = req.GET["uuid"]
+    tp = get_object_or_404(TripPayment, pk=payment_uuid)
+    tp.state = 2
+    tp.save()
+    # return payment successfull page
+    return
 
 class PreRegisterView(LoginRequiredMixin, View):
     def get(self, request, pk):

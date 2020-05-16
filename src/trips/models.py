@@ -26,14 +26,17 @@ class Trip(models.Model):
     capacity = models.PositiveIntegerField(verbose_name=_('Capacity'))
     image = models.ImageField(
         upload_to=image_upload_name, verbose_name=_('Image'))
+    price = models.IntegerField()
 
     def comments(self):
         return Comment.objects.filter(tip=self.pk).all()
+
     def __str__(self):
         return f'{self.title}'
 
     def __repr__(self):
         return f'<Trip: {self}>'
+
 
 class Comment(models.Model):
     class Meta:
@@ -41,7 +44,7 @@ class Comment(models.Model):
         verbose_name_plural = _('Comments')
     trip = models.Foreignkey(Trip, on_delete=models.CASCADE)
     text = models.TextField(max_length=500)
-    
+
 
 class PreRegister(models.Model):
     class Meta:
@@ -55,3 +58,12 @@ class PreRegister(models.Model):
         Trip, on_delete=models.PROTECT, verbose_name=_('Trip'))
     is_approved = models.BooleanField(
         default=False, verbose_name=_('Is Approved'))
+    is_paid = models.BooleanField()
+
+
+class TripPayment(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
+    pre_register = models.ForeignKey(PreRegister, on_delete=models.PROTECT)
+    # 0 => init, 1 => redirect_to_ipg, 2=> returned from ipg, 3 => verified
+    state = models.IntegerField()
+    ipg_uuid = models.CharField(max_length=255)
