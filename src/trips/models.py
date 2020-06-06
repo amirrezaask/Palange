@@ -42,7 +42,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = _('Comments')
         verbose_name_plural = _('Comments')
-    trip = models.Foreignkey(Trip, on_delete=models.CASCADE)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     text = models.TextField(max_length=500)
 
 
