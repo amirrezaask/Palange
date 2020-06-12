@@ -90,10 +90,6 @@ def trip_payment_ipg_callback(req):
     return
 
 
-def get_trips_rates(req):
-
-
-
 class PreRegisterView(LoginRequiredMixin, View):
     def get(self, request, pk):
         return self.post(request, pk)

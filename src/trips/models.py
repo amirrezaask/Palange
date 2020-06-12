@@ -32,7 +32,6 @@ class Trip(models.Model):
 
     def comments(self):
         return Comment.objects.filter(trip=self.pk).all()
-
     def tags(self):
         return self.tags.split("|")
     def feedbacks(self):
