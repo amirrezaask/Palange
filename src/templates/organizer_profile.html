@@ -8,7 +8,7 @@
             <img src="{{ profile.profile_picture }}" alt="">
         </div>
         <div class="content">
-            <div class="header">{{ profile.user.first_name + " " + profile.user.last_name  }}</div>
+            <div class="header">{{ profile }}</div>
             <div class="description">{{ profile.user.username }}</div>
         </div>
         <div class="extra content">
@@ -16,7 +16,7 @@
         </div>
     </a>
 </div>
-{% if request.user.is_authenticated and request.user.profile.is_organizer and (request.user.username == profile.user.username ) % }
+{% if request.user.is_authenticated and request.user.profile.is_organizer and request.user.username == profile.user.username %}
 <div class="ui horizontal divider">{% trans "Organizer" %}</div>
 <div class="ui one column grid">
     <div class="center aligned column">

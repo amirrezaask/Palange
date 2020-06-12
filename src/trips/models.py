@@ -77,10 +77,10 @@ class TripPayment(models.Model):
 
 class TripRate(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
-    user = models.ForeignKey(user_auth.models.Profile, on_delete=models.PROTECT)
+    user = models.ForeignKey(Profile, on_delete=models.PROTECT)
     rate = models.IntegerField()
 
 class TripFeedback(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
-    user = models.ForeignKey(user_auth.models.Profile, on_delete=models.PROTECT)
+    user = models.ForeignKey(Profile, on_delete=models.PROTECT)
     comment = models.TextField(max_length=4096)

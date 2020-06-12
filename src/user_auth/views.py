@@ -15,7 +15,8 @@ class SignupView(CreateView):
 
     def form_valid(self, form):
         form_valid = super(SignupView, self).form_valid(form)
-        Profile.objects.create(user=form.instance, phone_number=form.cleaned_data.get('phone_number'))
+        p = Profile.objects.create(user=form.instance, phone_number=form.cleaned_data.get('phone_number'))
+        OrganizerProfile.objects.create(profile=p)
         login(self.request, form.instance)
         return form_valid
 
@@ -24,6 +25,7 @@ class SignupView(CreateView):
 def organizer_profile(req):
     organizer_id = req.GET["id"]
     profile_info = get_object_or_404(OrganizerProfile, pk=organizer_id)
+    print(profile_info)
     return render(req, 'organizer_profile.html', {"profile": profile_info})
 
 

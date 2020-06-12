@@ -28,5 +28,8 @@ class OrganizerProfile(models.Model):
         
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     profile_picture = models.URLField(max_length=255)
-    score = models.IntegerField(max_length=255)
+    score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.profile.user.first_name + " " + self.profile.user.last_name
 

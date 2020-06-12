@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from user_auth.views import SignupView, organizer_profile
+from user_auth.views import SignupView, organizer_profile, update_organizer_profile
 
 app_name = 'auth'
 
