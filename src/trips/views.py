@@ -57,6 +57,10 @@ class TripDetailView(DetailView):
                 trip=self.object, profile=self.request.user.profile)
         except PreRegister.DoesNotExist:
             pass
+
+        trip_id = context_data["trip"].pk
+        trip_rates = get_object_or_404(TripRate, trip=trip_id)
+        trip_feeds = get_object_or_404(TripFeedback, trip=trip_id)
         context_data['comments'] = self.object.comments()
         return context_data
 
@@ -84,6 +88,11 @@ def trip_payment_ipg_callback(req):
     tp.save()
     # return payment successfull page
     return
+
+
+def get_trips_rates(req):
+
+
 
 class PreRegisterView(LoginRequiredMixin, View):
     def get(self, request, pk):

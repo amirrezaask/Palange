@@ -18,6 +18,8 @@ class Trip(models.Model):
     organizer = models.ForeignKey(
         Profile, on_delete=models.CASCADE, verbose_name=_('Organizer'))
 
+    tags_raw = models.TextField(max_length=4096)
+
     title = models.CharField(max_length=128, verbose_name=_('Title'))
     description = models.TextField(
         max_length=1024, verbose_name=_('Description'))
@@ -29,8 +31,14 @@ class Trip(models.Model):
     price = models.IntegerField()
 
     def comments(self):
-        return Comment.objects.filter(tip=self.pk).all()
+        return Comment.objects.filter(trip=self.pk).all()
 
+    def tags(self):
+        return self.tags.split("|")
+    def feedbacks(self):
+        return TripFeedback.objects.filter(trip=self.pk)
+    def rates(self):
+        return TripRate.objects.filter(trip=self.pk)
     def __str__(self):
         return f'{self.title}'
 
@@ -64,6 +72,16 @@ class PreRegister(models.Model):
 class TripPayment(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
     pre_register = models.ForeignKey(PreRegister, on_delete=models.PROTECT)
-    # 0 => init, 1 => redirect_to_ipg, 2=> returned from ipg, 3 => verified
     state = models.IntegerField()
     ipg_uuid = models.CharField(max_length=255)
+
+
+class TripRate(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
+    user = models.ForeignKey(user_auth.models.Profile, on_delete=models.PROTECT)
+    rate = models.IntegerField()
+
+class TripFeedback(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
+    user = models.ForeignKey(user_auth.models.Profile, on_delete=models.PROTECT)
+    comment = models.TextField(max_length=4096)
