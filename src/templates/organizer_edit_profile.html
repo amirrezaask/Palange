@@ -8,11 +8,11 @@
             <img src="{{ trip.image.url }}" alt="">
         </div>
         <div class="content">
-            <div class="header">{{ profile.user.first_name + " " + profile.user.last_name  }}</div>
-            <div class="description">{{ profile.user.username }}</div>
+            <div class="header">{{ organizerprofile }}</div>
+            <div class="description">{{ organizerprofile.user.username }}</div>
         </div>
         <div class="extra content">
-            <span><i class="user icon"></i> {{ profile.score }}</span>
+            <span><i class="user icon"></i> {{ organizerprofile.score }}</span>
         </div>
     </a>
 </div>

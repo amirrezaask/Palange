@@ -15,4 +15,5 @@ urlpatterns = [
     path('management', trips_views.TripsManagementView.as_view(), name='management'),
     path('<int:pk>/manage', trips_views.ManageTripView.as_view(), name='manage'),
     path('preregister/<int:pk>/approve', trips_views.ApprovePreRegisterView.as_view(), name='approve'),
+    path('trip/<int:trip_id>/comment', trips_views.add_comment, name='add_comment')
 ]

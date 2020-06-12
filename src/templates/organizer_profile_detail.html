@@ -8,19 +8,19 @@
             <img src="{{ profile.profile_picture }}" alt="">
         </div>
         <div class="content">
-            <div class="header">{{ profile }}</div>
-            <div class="description">{{ profile.user.username }}</div>
+            <div class="header">{{ organizerprofile }}</div>
+            <div class="description">{{ organizerprofile.profile.user.username }}</div>
         </div>
         <div class="extra content">
-            <span><i class="user icon"></i> {{ profile.score }}</span>
+            <span><i class="user icon"></i> {{ organizerprofile.score }}</span>
         </div>
     </a>
 </div>
-{% if request.user.is_authenticated and request.user.profile.is_organizer and request.user.username == profile.user.username %}
+{% if request.user.is_authenticated and request.user.profile.is_organizer and request.user.username == organizerprofile.profile.user.username %}
 <div class="ui horizontal divider">{% trans "Organizer" %}</div>
 <div class="ui one column grid">
     <div class="center aligned column">
-        <a class="big ui olive button" href="{% url "user_auth:edit_organizer_profile" %}"><i class="plus icon"></i> {% trans "Edit Profile" }</a>
+        <a class="big ui olive button" href='{% url "auth:update_organizer_profile"  request.user.pk %}'><i class="plus icon"></i> {% trans "Edit Profile" %}</a>
     </div>
 </div>
 {% endif %}

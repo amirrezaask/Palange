@@ -1,19 +1,20 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, CreateView, UpdateView, ListView, DetailView
 
 from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
-from trips.models import Trip, PreRegister, TripPayment
+from trips.models import Trip, PreRegister, TripPayment, TripRate, TripFeedback, Comment
 
+from user_auth.models import Profile
 
 class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
     model = Trip
     fields = ['title', 'description', 'start_date',
-              'end_date', 'capacity', 'image']
+              'end_date', 'capacity', 'price','image']
     template_name = 'new_trip.html'
     success_url = reverse_lazy('home')
 
@@ -57,13 +58,20 @@ class TripDetailView(DetailView):
                 trip=self.object, profile=self.request.user.profile)
         except PreRegister.DoesNotExist:
             pass
-
         trip_id = context_data["trip"].pk
-        trip_rates = get_object_or_404(TripRate, trip=trip_id)
-        trip_feeds = get_object_or_404(TripFeedback, trip=trip_id)
+        trip_rates = TripRate.objects.filter(trip=trip_id).order_by("pk")
+        trip_feeds = TripFeedback.objects.filter(trip=trip_id).order_by("pk")
+        context_data['trip_rates'] = trip_rates
+        context_data['trip_feeds'] = trip_feeds
         context_data['comments'] = self.object.comments()
         return context_data
 
+def add_comment(req, trip_id):
+    print(req.POST)
+    profile = get_object_or_404(Profile, user=req.user.pk)
+    trip = get_object_or_404(Trip, pk=trip_id)
+    Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
+    return redirect('trips:detail', pk=trip_id)
 
 def get_ipg():
     return ("", "")

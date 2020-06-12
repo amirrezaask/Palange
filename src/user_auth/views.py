@@ -1,10 +1,13 @@
 from django.contrib.auth import login
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseForbidden
 from user_auth.forms import SignupForm
 from user_auth.models import Profile, OrganizerProfile
+from django.contrib.auth.mixins import LoginRequiredMixin
+from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
+from django.views.generic import View, CreateView, UpdateView, ListView, DetailView
 
 
 
@@ -22,25 +25,15 @@ class SignupView(CreateView):
 
 
 
-def organizer_profile(req):
-    organizer_id = req.GET["id"]
-    profile_info = get_object_or_404(OrganizerProfile, pk=organizer_id)
-    print(profile_info)
-    return render(req, 'organizer_profile.html', {"profile": profile_info})
+class OrganizerProfileDetailView(DetailView):
+    model = OrganizerProfile
+    template_name = 'organizer_profile_detail.html'
+    def get_context_data(self, **kwargs):
+        context_data = super(OrganizerProfileDetailView, self).get_context_data(**kwargs)
+        return context_data
 
-
-def update_organizer_profile(req):
-    if not req.user.is_authenticated:
-        return HttpResponseForbidden()
-    if req.method == "GET":
-        organizer_id = req.GET["id"]
-        profile_info = get_object_or_404(OrganizerProfile, pk=organizer_id)
-        
-        return render(req, 'organizer_edit_profile.html', {"profile": profile_info})
-    if req.method == "POST":
-        organizer_id = req.GET["id"]
-        if organizer_id != req.user.user_id:
-            return HttpResponseForbidden()
-        OrganizerProfile.filter(pk=organizer_id).update(**req.POST)
-        return
-                
+class EditOrganizerProfile(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
+    model = OrganizerProfile
+    fields = []
+    template_name = 'organizer_edit_profile.html'
+    success_url = reverse_lazy('home')

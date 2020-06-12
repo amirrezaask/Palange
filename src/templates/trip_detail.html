@@ -40,17 +40,25 @@
             </div>
             <div class="extra content">
                 <div class="small header">
-                    {{ trip.organizer.user }}
+                    <a href='{% url "auth:organizer_profile" trip.organizer.user.pk %}'>{{ trip.organizer.user }}</a>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="ui segment">
         <h2 class="ui header">{{ trip.title }}</h2>
         <p class="text">{{ trip.description|linebreaks }}</p>
         <ul>
-            {% for c in trip.comments }
-            <li>{{ c.text }}</li>
+            <li>
+                <form method=POST action='{% url "trips:add_comment" trip.id %}' >
+                    {% csrf_token %}
+                    <input type="text" name=text />
+                    <input type="submit" value='{% trans "Add Comment" %}' />
+                </form>
+            </li>
+            {% for c in trip.comments %}
+            <li>{{c.profile}}: {{ c.text }}</li>
             {% endfor %}
         </ul>
     </div>
