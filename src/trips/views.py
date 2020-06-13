@@ -73,31 +73,6 @@ def add_comment(req, trip_id):
     Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
     return redirect('trips:detail', pk=trip_id)
 
-def get_ipg():
-    return ("", "")
-    
-def trip_payment_inti(req):
-    trip_id = req.GET["trip"]
-    pre_register_id = req.GET["pre_register_id"]
-    pre_register = get_object_or_404(PreRegister, pk=pre_register_id)
-    if pre_register.is_paid:
-        # error pre register is already paid
-        pass
-    tp = TripPayment(trip=trip_id, pre_register=pre_register_id, state=0)
-    uuid, url = get_ipg()
-    tp.ipg_uuid = uuid
-    tp.save()
-    return redirect(req, url)
-    
-def trip_payment_ipg_callback(req):
-    payment_uuid = req.GET["uuid"]
-    tp = get_object_or_404(TripPayment, pk=payment_uuid)
-    tp.state = 2
-    tp.save()
-    # return payment successfull page
-    return
-
-
 class PreRegisterView(LoginRequiredMixin, View):
     def get(self, request, pk):
         return self.post(request, pk)
@@ -110,6 +85,11 @@ class PreRegisterView(LoginRequiredMixin, View):
             'You preregistered successfully, approvement pending.'))
         return redirect('trips:detail', pk)
 
+def pay_preregister(req, pk):
+    pre_register = get_object_or_404(PreRegister, pk=pk)
+    pre_register.is_paid = True
+    pre_register.save()
+    return redirect('trips:management')
 
 class CancelPreRegisterView(LoginRequiredMixin, View):
     def post(self, request, pk):

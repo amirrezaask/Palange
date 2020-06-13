@@ -14,6 +14,7 @@
             <th>{% trans "Email" %}</th>
             <th>{% trans "Phone Number" %}</th>
             <th>{% trans "Status" %}</th>
+            <th>Is paid</th>
         </tr>
         </thead>
         <tbody>
@@ -29,6 +30,16 @@
                         <form action="{% url "trips:approve" preregister.id %}" method="post">
                         {% csrf_token %}
                             <button class="ui olive basic label">{% trans "approve" %}</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if preregister.is_paid %}
+                        <div class="ui olive basic label"><i class="check icon"></i>{% trans "Paid" %}</div>
+                    {% else %}
+                        <form action="{% url "trips:pay" preregister.id %}" method="post">
+                        {% csrf_token %}
+                            <button class="ui olive basic label">{% trans "pay" %}</button>
                         </form>
                     {% endif %}
                 </td>

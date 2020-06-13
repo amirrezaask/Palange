@@ -52,7 +52,10 @@ class Comment(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     text = models.TextField(max_length=500)
     profile = models.ForeignKey(Profile,null=True, default=None, on_delete=models.PROTECT)
+    block = models.BooleanField(default=False)
 
+    def is_block(self):
+        return not self.block
     def __str__(self):
         return '{} -> {}'.format(self.profile, self.text)
 
@@ -70,6 +73,9 @@ class PreRegister(models.Model):
     is_approved = models.BooleanField(
         default=False, verbose_name=_('Is Approved'))
     is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{} :: {}'.format(self.profile, self.trip)
 
 
 class TripPayment(models.Model):

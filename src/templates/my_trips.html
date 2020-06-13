@@ -24,6 +24,17 @@
                                 {% trans "Your registeration is pending for approvement." %}
                             </div>
                         {% endif %}
+                        {% if preregister.is_paid %}
+                            <div class="ui olive message" style="max-width: 300px">
+                                <i class="check icon"></i>
+                                {% trans "Your registeration is paid." %}
+                            </div>
+                        {% else %}
+                                <form action="{% url "trips:pay" preregister.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="ui olive basic label">{% trans "Pay" %}</button>
+                                </form>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
