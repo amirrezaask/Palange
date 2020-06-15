@@ -34,6 +34,6 @@ class OrganizerProfileDetailView(DetailView):
 
 class EditOrganizerProfile(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
     model = OrganizerProfile
-    fields = []
+    fields = ['profile_picture']
     template_name = 'organizer_edit_profile.html'
     success_url = reverse_lazy('home')

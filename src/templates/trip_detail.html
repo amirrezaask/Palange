@@ -107,7 +107,7 @@
                     {% trans "Your registeration is paid." %}
                 </div>
             {% else %}
-                    <form action="{% url "trips:pay" preregister.id %}" method="post">
+                    <form action="{% url "trips:pay" trip.id %}" method="post">
                         {% csrf_token %}
                         <button class="ui olive basic label">{% trans "Pay" %}</button>
                     </form>

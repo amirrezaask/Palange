@@ -29,6 +29,7 @@ class EditTripView(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
               'end_date', 'capacity', 'image']
     template_name = 'edit_trip.html'
     success_url = reverse_lazy('home')
+    
 
 
 class TripsManagementView(LoginRequiredMixin, OrganizerRequiredMixin, ListView):
