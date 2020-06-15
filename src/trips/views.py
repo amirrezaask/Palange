@@ -13,7 +13,7 @@ from user_auth.models import Profile
 
 class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
     model = Trip
-    fields = ['title', 'description', 'start_date',
+    fields = ['title', 'description', 'start_date', 'tags_raw',
               'end_date', 'capacity', 'price','image']
     template_name = 'new_trip.html'
     success_url = reverse_lazy('home')
@@ -25,7 +25,7 @@ class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
 
 class EditTripView(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
     model = Trip
-    fields = ['title', 'description', 'start_date',
+    fields = ['title', 'description', 'start_date', 'tags_raw',
               'end_date', 'capacity', 'image']
     template_name = 'edit_trip.html'
     success_url = reverse_lazy('home')
@@ -121,3 +121,14 @@ class ApprovePreRegisterView(LoginRequiredMixin, OrganizerRequiredMixin, View):
         preregister.save()
         messages.success(request, _('Just approved.'))
         return redirect('trips:manage', preregister.trip_id)
+
+class SearchView(ListView):
+    model = Trip
+    template_name = 'search.html'
+
+    def get(self, req):
+       query = req.GET.get('query')
+       if not query:
+           return render(req, 'search.html', {})
+       result1 = Trip.objects.filter(title__icontains=query) | Trip.objects.filter(tags_raw__icontains=query)
+       return render(req, 'search.html', {'all_search_result': result1})

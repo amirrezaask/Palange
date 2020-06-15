@@ -61,6 +61,12 @@
                         </a>
                     {% endif %}
                 {% endblock %}
+                {% block search %}
+                        <a href="{% url "trips:search" %}"
+                           class="search item">
+                            <i class="cogs icon"></i>{% trans "search" %}
+                        </a>
+                {% endblock %}
             {% endblock %}
 
             {% if request.user.is_authenticated and request.user.profile.is_organizer %}

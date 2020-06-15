@@ -7,7 +7,7 @@
         <img class="ui fluid image" src="{{ trip.image.url }}" alt=""/>
     {% endif %}
     <br>
-    <div class="ui three horizontal cards">
+    <div class="ui four horizontal cards">
         <div class="olive card">
             <div class="content">
                 <div class="header">
@@ -43,7 +43,17 @@
                     <a href='{% url "auth:organizer_profile" trip.organizer.user.pk %}'>{{ trip.organizer.user }}</a>
                 </div>
             </div>
+            
         </div>
+        <div class="olive card">
+            <div class="content">
+                    <div class="header">
+                        {{ trip.tags_raw }}
+                    </div>
+            </div>
+        </div>
+
+        
     </div>
 
     <div class="ui segment">
