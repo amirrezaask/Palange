@@ -13,7 +13,10 @@ class Profile(models.Model):
 
     phone_number = models.CharField(max_length=11, verbose_name=_('Phone Number'))
     is_organizer = models.BooleanField(default=False, verbose_name=_('Is Organizer'))
+    favorite_tags = models.CharField(max_length=2000, verbose_name=_("Favorite Tags"))
 
+    def tags(self):
+        return self.favorite_tags.split(",")
     def __str__(self):
         return f'{self.user}'
 

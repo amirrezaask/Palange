@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<div>
+    {% for t in trips %}
+    <div class="item">
+        <img class="ui small rounded image" style="height: 120px" src="{{ t.trip.image.url }}"
+             alt="">
+        <div class="content card">
+            <a href="{% url "trips:detail" t.pk %}"
+               class="ui big header">{{ t.title }}</a>
+            <div class="description">{{ t.description }}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -133,3 +133,15 @@ class SearchView(ListView):
            return render(req, 'search.html', {})
        result1 = Trip.objects.filter(title__icontains=query) | Trip.objects.filter(tags_raw__icontains=query)
        return render(req, 'search.html', {'all_search_result': result1})
+
+def get_notifications(req):
+    if not req.user.is_authenticated:
+        raise PermissionDenied()
+    my_tags = Profile.objects.filter(user=req.user.pk).all()[0].tags()
+    selected_trips = []
+    for t in my_tags:
+        trips = Trip.objects.all()
+        for trip in trips:
+            if t in trip.tags():
+                selected_trips.append(trip)
+    return render(req, "notification.html", {"trips": selected_trips})

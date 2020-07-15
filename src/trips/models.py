@@ -77,13 +77,11 @@ class PreRegister(models.Model):
     def __str__(self):
         return '{} :: {}'.format(self.profile, self.trip)
 
-
 class TripPayment(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
     pre_register = models.ForeignKey(PreRegister, on_delete=models.PROTECT)
     state = models.IntegerField()
     ipg_uuid = models.CharField(max_length=255)
-
 
 class TripRate(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
