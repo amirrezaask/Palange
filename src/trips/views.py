@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -5,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, CreateView, UpdateView, ListView, DetailView
-
+import time
 from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
 from trips.models import Trip, PreRegister, TripPayment, TripRate, TripFeedback, Comment
 
@@ -71,7 +73,9 @@ def add_comment(req, trip_id):
     print(req.POST)
     profile = get_object_or_404(Profile, user=req.user.pk)
     trip = get_object_or_404(Trip, pk=trip_id)
-    Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
+    comment = Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
+    if trip.end_date > datetime.datetime.now():
+        TripFeedback.objects.create(trip=trip_id, user=req.user.pk, comment=comment.pk)
     return redirect('trips:detail', pk=trip_id)
 
 class PreRegisterView(LoginRequiredMixin, View):
