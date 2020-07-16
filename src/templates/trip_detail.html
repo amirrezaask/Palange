@@ -64,9 +64,11 @@
                 <form method=POST action='{% url "trips:add_comment" trip.id %}' >
                     {% csrf_token %}
                     <input type="text" name=text />
-                    <input type="submit" value='{% trans "Add Comment" %}' />
+                    <input type="submit" value='{% if is_done %} Add feedback {% else %} Add comment {% endif %}' />
                 </form>
             </li>
+                    {% if is_done %}
+
             <li>
             <form method=POST action='{% url "trips:add_rate" trip.id %}' >
                 {% csrf_token %}
@@ -74,12 +76,14 @@
                 <input type="submit" value='{% trans "Add Rate" %}' />
             </form>
             </li>
+        {% endif %}
             <h5>Comments</h5>
             {% for c in trip.comments %}
                 {% if c.is_block %}
                     <li>{{c.profile}}: {{ c.text }}</li>
                 {% endif %}
             {% endfor %}
+            {% if is_done %}
             <h5>Feedbacks</h5>
             {% for f in feedbacks %}
                 <li>{{ f.comment }}</li>
@@ -88,6 +92,7 @@
             {% for r in rates %}
                 <li>{{r.user}}: {{ r.rate }}</li>
             {% endfor %}
+        {% endif %}
         </ul>
     </div>
     </div>

@@ -83,6 +83,7 @@ class TripDetailView(DetailView):
         context_data['rates'] = trip_rates
         context_data['feedbacks'] = trip_feeds
         context_data['comments'] = self.object.comments()
+        context_data['is_done'] = trip.end_date < utc.localize(datetime.now())
         return context_data
 
 def add_comment(req, trip_id):
