@@ -37,3 +37,9 @@ class EditOrganizerProfile(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView)
     fields = ['profile_picture']
     template_name = 'organizer_edit_profile.html'
     success_url = reverse_lazy('home')
+
+class EditProfile(LoginRequiredMixin, IsTripOrganizerMixin, UpdateView):
+    model = Profile
+    fields = ['favorite_tags']
+    template_name = 'edit_profile.html'
+    success_url = reverse_lazy('home')

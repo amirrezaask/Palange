@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, CreateView, UpdateView, ListView, DetailView
 import time
+
+from pytz import utc
 from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
 from trips.models import Trip, PreRegister, TripPayment, TripRate, TripFeedback, Comment
 
@@ -46,6 +48,19 @@ class TripListView(ListView):
     model = Trip
     template_name = 'trip_list.html'
     ordering = '-id'
+    def get_context_data(self, **kwargs):
+        context_data = super(TripListView, self).get_context_data(**kwargs)
+        if not self.request.user.is_authenticated:
+            return context_data
+        profile = Profile.objects.get(user=self.request.user)
+        if len(profile.tags()) < 1:
+            return context_data
+        fav_trips = []
+        for t in profile.tags():
+            fav_trips += list(Trip.objects.filter(tags_raw__icontains=t))
+        context_data['fav_trips'] = fav_trips
+        print(context_data)
+        return context_data
 
 
 class TripDetailView(DetailView):
@@ -62,20 +77,30 @@ class TripDetailView(DetailView):
         except PreRegister.DoesNotExist:
             pass
         trip_id = context_data["trip"].pk
-        trip_rates = TripRate.objects.filter(trip=trip_id).order_by("pk")
-        trip_feeds = TripFeedback.objects.filter(trip=trip_id).order_by("pk")
-        context_data['trip_rates'] = trip_rates
-        context_data['trip_feeds'] = trip_feeds
+        trip = Trip.objects.filter(pk=trip_id).get()
+        trip_rates = TripRate.objects.filter(trip=trip).order_by("pk").all()
+        trip_feeds = TripFeedback.objects.filter(trip=trip).order_by("pk").all()
+        context_data['rates'] = trip_rates
+        context_data['feedbacks'] = trip_feeds
         context_data['comments'] = self.object.comments()
         return context_data
 
 def add_comment(req, trip_id):
-    print(req.POST)
     profile = get_object_or_404(Profile, user=req.user.pk)
     trip = get_object_or_404(Trip, pk=trip_id)
-    comment = Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
-    if trip.end_date > datetime.datetime.now():
-        TripFeedback.objects.create(trip=trip_id, user=req.user.pk, comment=comment.pk)
+    if trip.end_date < utc.localize(datetime.now()):
+        TripFeedback.objects.create(trip=trip, user=profile, comment=req.POST['text'])
+    else:
+        Comment.objects.create(trip=trip, profile=profile, text=req.POST['text'])
+    return redirect('trips:detail', pk=trip_id)
+
+def add_rate(req, trip_id):
+    rate = req.POST['rate']
+    profile = get_object_or_404(Profile, user=req.user.pk)
+    trip = get_object_or_404(Trip, pk=trip_id)
+    if trip.end_date >  utc.localize(datetime.now()):
+        raise Exception()
+    TripRate.objects.create(trip=trip, user=req.user.profile, rate=rate)
     return redirect('trips:detail', pk=trip_id)
 
 class PreRegisterView(LoginRequiredMixin, View):

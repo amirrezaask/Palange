@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from trips.models import Trip, PreRegister, Comment
+from trips.models import Trip, PreRegister, Comment, TripFeedback, TripRate
 
 
 admin.site.register(Comment)
-
+admin.site.register(TripRate)
+admin.site.register(TripFeedback)
 
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):

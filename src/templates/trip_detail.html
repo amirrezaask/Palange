@@ -67,10 +67,26 @@
                     <input type="submit" value='{% trans "Add Comment" %}' />
                 </form>
             </li>
+            <li>
+            <form method=POST action='{% url "trips:add_rate" trip.id %}' >
+                {% csrf_token %}
+                <input type="number" name=rate />
+                <input type="submit" value='{% trans "Add Rate" %}' />
+            </form>
+            </li>
+            <h5>Comments</h5>
             {% for c in trip.comments %}
                 {% if c.is_block %}
                     <li>{{c.profile}}: {{ c.text }}</li>
                 {% endif %}
+            {% endfor %}
+            <h5>Feedbacks</h5>
+            {% for f in feedbacks %}
+                <li>{{ f.comment }}</li>
+            {% endfor %}
+            <h5>Rates</h5>
+            {% for r in rates %}
+                <li>{{r.user}}: {{ r.rate }}</li>
             {% endfor %}
         </ul>
     </div>

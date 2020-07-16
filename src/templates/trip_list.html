@@ -3,6 +3,24 @@
 {% block home_button_active %}active{% endblock %}
 {% block content %}
     <div class="ui link three cards">
+        <h1>Favorite Tags</h1>
+        {% for trip in fav_trips %}
+            <a class="ui card" href="{% url "trips:detail" trip.pk %}">
+                <div class="image">
+                    <img src="{{ trip.image.url }}" alt="">
+                </div>
+                <div class="content">
+                    <div class="header">{{ trip.title }}</div>
+                    <div class="description">{{ trip.description }}</div>
+                </div>
+                <div class="extra content">
+                    <span><i class="user icon"></i> {{ trip.capacity }}</span>
+                    <span class="right floated">{{ trip.start_date|date:"d M" }} - {{ trip.end_date|date:"d M" }}</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+        <h1>all</h1>
         {% for trip in trip_list %}
             <a class="ui card" href="{% url "trips:detail" trip.id %}">
                 <div class="image">

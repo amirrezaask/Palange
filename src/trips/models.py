@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -87,8 +88,17 @@ class TripRate(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
     user = models.ForeignKey(Profile, on_delete=models.PROTECT)
     rate = models.IntegerField()
+    def __str__(self):
+        return "{} {}".format(self.user, self.trip)
 
 class TripFeedback(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT)
     user = models.ForeignKey(Profile, on_delete=models.PROTECT)
     comment = models.TextField(max_length=4096)
+    def __str__(self):
+        return "{} {} {}".format(self.user, self.trip, self.comment)
+
+class Ads(models.Model):
+    admin = models.ForeignKey(User, on_delete=models.PROTECT)
+    ads_url = models.CharField(max_length=1000)
+    is_active = models.BooleanField(default=False)

@@ -67,6 +67,12 @@
                             <i class="cogs icon"></i>{% trans "search" %}
                         </a>
                 {% endblock %}
+                {% block edit_profile %}
+                        <a href="{% url "auth:update_profile" request.user.pk %}"
+                           class="item">
+                            <i class="cogs icon"></i>{% trans "edit profile" %}
+                        </a>
+                {% endblock %}
             {% endblock %}
 
             {% if request.user.is_authenticated and request.user.profile.is_organizer %}
