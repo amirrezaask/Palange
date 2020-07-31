@@ -99,6 +99,7 @@ class TripFeedback(models.Model):
         return "{} {} {}".format(self.user, self.trip, self.comment)
 
 class Ads(models.Model):
-    admin = models.ForeignKey(User, on_delete=models.PROTECT)
+    admin = models.ForeignKey(Profile, on_delete=models.PROTECT)
     ads_url = models.CharField(max_length=1000)
     is_active = models.BooleanField(default=False)
+    seen = models.IntegerField(default=0)

@@ -6,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from user_auth.models import Profile, OrganizerProfile
 
 admin.site.unregister(User)
+admin.site.register(Profile)
+
 admin.site.register(OrganizerProfile)
 
 class ProfileAdmin(admin.StackedInline):

@@ -18,5 +18,8 @@ urlpatterns = [
     path('preregister/<int:pk>/pay', trips_views.pay_preregister, name="pay"),
     path('trip/<int:trip_id>/comment', trips_views.add_comment, name='add_comment'),
     path('trip/<int:trip_id>/rate', trips_views.add_rate, name='add_rate'),
-    path('search', trips_views.SearchView.as_view(), name='search')
+    path('search', trips_views.SearchView.as_view(), name='search'),
+    path('ads/new', trips_views.NewAdsView.as_view(), name='new_ads'),
+    path('ads/list', trips_views.AdsListView.as_view(), name='list_ads'),
+    path('ads/approve/<int:ad_id>', trips_views.ads_approve, name="approve_ad")
 ]

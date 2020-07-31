@@ -68,9 +68,17 @@
                         </a>
                 {% endblock %}
                 {% block edit_profile %}
+                    {% if request.user.is_authenticated %}
                         <a href="{% url "auth:update_profile" request.user.pk %}"
                            class="item">
                             <i class="cogs icon"></i>{% trans "edit profile" %}
+                        </a>
+                        {% endif %}
+                {% endblock %}
+                {% block ads %}
+                        <a href="{% url "trips:new_ads"  %}"
+                           class="item">
+                            <i class="cogs icon"></i>{% trans "New Ads" %}
                         </a>
                 {% endblock %}
             {% endblock %}

@@ -14,7 +14,7 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=11, verbose_name=_('Phone Number'))
     is_organizer = models.BooleanField(default=False, verbose_name=_('Is Organizer'))
     favorite_tags = models.CharField(max_length=2000, verbose_name=_("Favorite Tags"))
-
+    god = models.BooleanField(default=False)
     def tags(self):
         return self.favorite_tags.split(",")
     def __str__(self):
@@ -26,8 +26,8 @@ class Profile(models.Model):
 
 class OrganizerProfile(models.Model):
     class Meta:
-        verbose_name = _('Profile')
-        verbose_name_plural = _('Profiles')
+        verbose_name = _('OrganizerProfile')
+        verbose_name_plural = _('OrganizerProfiles')
         
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     profile_picture = models.URLField(max_length=255)

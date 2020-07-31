@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block home_button_active %}active{% endblock %}
+{% block content %}
+        {% for ad in ads_list %}
+            <a class="ui card" href="">
+                <div class="image">
+                    <img src="{{ ad.ads_url }}" alt="">
+                </div>
+                <div class="content">
+                    <div class="header">تعداد بازدید</div>
+                    <div class="description">{{ ad.seen }}</div>
+                </div>
+            </a>
+        {% endfor %}
+        {% if request.user.profile.god %}
+            <h3> تبلیغات تایید نشده </h3>
+            {% for ad in ads_not_active %}
+            <a class="ui card" href="{% url "trips:approve_ad" ad.pk %}">
+                <div class="image">
+                    <img src="{{ ad.ads_url }}" alt="">
+                </div>
+            </a>
+            {% endfor %}
+        {% endif %}
+{% endblock %}

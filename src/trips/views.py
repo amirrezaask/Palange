@@ -11,9 +11,21 @@ import time
 
 from pytz import utc
 from trips.mixins import OrganizerRequiredMixin, IsTripOrganizerMixin
-from trips.models import Trip, PreRegister, TripPayment, TripRate, TripFeedback, Comment
+from trips.models import Trip, PreRegister, TripPayment, TripRate, TripFeedback, Comment, Ads
 
 from user_auth.models import Profile
+
+class NewAdsView(LoginRequiredMixin, CreateView):
+    model = Ads
+    fields = ['ads_url']
+    template_name = 'new_ads.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.admin = self.request.user.profile
+        if not self.request.user.profile.god:
+            form.instance.is_active = True
+        return super(NewAdsView, self).form_valid(form)
 
 class NewTripView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
     model = Trip
@@ -59,9 +71,50 @@ class TripListView(ListView):
         for t in profile.tags():
             fav_trips += list(Trip.objects.filter(tags_raw__icontains=t))
         context_data['fav_trips'] = fav_trips
+        ads = Ads.objects.all()
+        min_seen_ad = None
+        for ad in ads:
+            if not ad.is_active:
+                continue
+            if not min_seen_ad:
+                min_seen_ad = ad
+            if ad.seen < min_seen_ad.seen:
+                min_seen_ad = ad
+        context_data['ads'] = min_seen_ad
+        if min_seen_ad:
+            min_seen_ad.seen += 1
+            min_seen_ad.save()
         print(context_data)
         return context_data
 
+class AdsListView(ListView):
+    model = Ads
+    template_name = 'ads_list.html'
+    ordering = '-id'
+    def get_context_data(self, **kwargs):
+        context_data = super(AdsListView, self).get_context_data(**kwargs)
+        if not self.request.user.is_authenticated:
+            return context_data
+        ads = context_data["ads_list"]
+        ads_filtered = []
+        ads_not_active = []
+        for ad in ads:
+            if not ad.is_active:
+                ads_not_active.append(ad)
+                continue
+            if ad.admin.pk == self.request.user.profile.pk or self.request.user.profile.god:
+                ads_filtered.append(ad)
+        context_data['ads_list'] = ads_filtered
+        context_data['ads_not_active'] = ads_not_active
+        return context_data
+
+def ads_approve(req, ad_id):
+    if not req.user.profile.god: 
+        return redirect('home')
+    ad = Ads.objects.get(pk=ad_id)
+    ad.is_active = True
+    ad.save()
+    return redirect('trips:list_ads')
 
 class TripDetailView(DetailView):
     model = Trip
