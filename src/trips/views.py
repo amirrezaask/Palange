@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from random import choice
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -72,14 +73,7 @@ class TripListView(ListView):
             fav_trips += list(Trip.objects.filter(tags_raw__icontains=t))
         context_data['fav_trips'] = fav_trips
         ads = Ads.objects.all()
-        min_seen_ad = None
-        for ad in ads:
-            if not ad.is_active:
-                continue
-            if not min_seen_ad:
-                min_seen_ad = ad
-            if ad.seen < min_seen_ad.seen:
-                min_seen_ad = ad
+        min_seen_ad = choice(ads)
         context_data['ad'] = min_seen_ad
         if min_seen_ad:
             min_seen_ad.seen += 1

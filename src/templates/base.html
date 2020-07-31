@@ -81,6 +81,12 @@
                             <i class="cogs icon"></i>{% trans "New Ads" %}
                         </a>
                 {% endblock %}
+                {% block ads_list %}
+                        <a href="{% url "trips:list_ads"  %}"
+                           class="item">
+                            <i class="cogs icon"></i>{% trans "List Ads" %}
+                        </a>
+                {% endblock %}
             {% endblock %}
 
             {% if request.user.is_authenticated and request.user.profile.is_organizer %}
