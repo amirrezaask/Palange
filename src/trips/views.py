@@ -80,7 +80,7 @@ class TripListView(ListView):
                 min_seen_ad = ad
             if ad.seen < min_seen_ad.seen:
                 min_seen_ad = ad
-        context_data['ads'] = min_seen_ad
+        context_data['ad'] = min_seen_ad
         if min_seen_ad:
             min_seen_ad.seen += 1
             min_seen_ad.save()
